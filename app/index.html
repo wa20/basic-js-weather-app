@@ -5,31 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="./style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <title>Weather Dash</title>
 </head>
 <body>
     <header class="sticky top-0 bg-[#013B94] shadow-lg h-1/4 p-10 flex flex-1">
         <h1 class="text-white text-6xl text-center font-semibold">Weather Dash</h1>
     </header>
-    <main class="grid grid-cols-8 md:divide-x h-screen bg-slate-200">
-        <section class="bg-[#013B94] md:col-span-3">
-            
-            <div class="flex  items-center justify-center m-10">
-                <lable class="text-4xl pr-5 font-semibold text-white ">City</lable>
-                <input id="search" type="text" class="text-4xl p-5 w-full rounded-md" placeholder="Search City..." />
-                
-            </div>
-            <div class="">
+    <main class="grid h-screen bg-slate-200 xl:grid-cols-8 xl:divide-x grid-rows-8 xl:grid-rows-1">
+        <section class="bg-[#013B94] xl:col-span-3">
+
+            <form class="flex items-center justify-center m-10" id="word-form" onsubmit="getWeather(event)">
+                <!-- <label class="text-4xl pr-5 font-semibold text-white">City</label> -->
+                <input id="searchCity" type="text" class="text-4xl p-5 w-full rounded-md" placeholder="Search City..." />
+                <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+                <button type="submit" class="bg-blue-600 p-5 text-4xl ml-4 rounded-md shadow-sm text-white hover:shadow-md active:scale-95">Submit</button>
+            </form>
+
+            <div>
 
             </div>
-
             
-
         </section>
-        <section class=" md:col-span-5">
-
+        <section class="xl:col-span-5">
+            <!-- Content for the second section -->
         </section>
-
     </main>
+    <script src="./script.js"></script>
 </body>
 </html>
