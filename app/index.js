@@ -34,7 +34,15 @@ async function getWeather(city) {
       throw new Error("City not found");
     }
     let data = await response.json();
+    
+
+    const lat = data.coord.lat;
+    const lon = data.coord.lon;
+
+    console.log("lat:", lat);
+    renderForecastCards(lat, lon);
     currentForecast(data);
+    
 
     // Check if the city is already in the search history
     if (!searchHistoryArray.includes(data.name)) {
@@ -130,15 +138,38 @@ async function currentForecast(data) {
 }
 
 
-async function renderForecastCards() {
-  // Get the forecast container
-  // const forecastContainer = document.getElementById("forecast");
-  // forecastContainer.innerHTML = "";
-  // // Create a new card
-  // const card = document.createElement("div");
-  // card.className = "bg-white w-full p-5 text-center rounded-lg cursor-pointer hover:shadow-md active:scale-95 mb-5 text-gray-800 text-4xl list-none";
-  // // Append the new card to the forecast container
-  // forecastContainer.appendChild(card);
+async function renderForecastCards(lat, lon) {
+
+    const cnt = 5;
+
+    if (!lat || !lon) {
+        console.log("City lat/lon cannot be empty.");
+        return false;
+      }
+
+    try {
+      let res = await fetch(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly&appid=${APIKEY}&units=metric`
+      );
+      if (!res.ok) {
+        throw new Error("City not found");
+      }
+      
+      const data = await res.json();
+
+        console.log("datazzzz:", data);
+      forecastCards(data);
+      
+  
+    } catch (error) {  
+        console.error("Error fetching weather data:", error);
+    }
+}
+
+async function forecastCards(data) {   
+
+    console.log("data cards:", data);
+
 }
 
 async function searchHistory(citySearched) {
