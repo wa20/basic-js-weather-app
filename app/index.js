@@ -51,63 +51,84 @@ async function getWeather(city) {
 }
 
 async function currentForecast(data) {
-  console.log("data:", data);
+    console.log("data:", data);
 
-  const mainCard = document.getElementById("mainCardLeft");
-  
+    const mainCardLeft = document.getElementById("mainCardLeft");
+    const mainCardRight = document.getElementById("mainCardRight");
 
-  const today = moment().format("ddd MMM Do");
+    const today = moment().format("ddd MMM Do");
 
-  const cityName = data.name;
-  const tempRaw = data.main.temp;
-  const celsius = (tempRaw - 32) * 5/9;
+    const cityName = data.name;
+    const tempRaw = data.main.temp;
+    const celsius = ((tempRaw - 273.15)).toFixed(1);  // Converting to Celsius
 
-  const feelsLike = data.main.feels_like;
-  const tempMax = data.main.temp_max;
-  const humidity = data.main.humidity;
-  const sunrise = data.sys.sunrise;
-  const sunset = data.sys.sunset;
+    const feelsLike = ((data.main.feels_like - 273.15)).toFixed(1); // Converting to Celsius
+    const tempMax = ((data.main.temp_max - 273.15)).toFixed(1); // Converting to Celsius
+    const humidity = data.main.humidity;
+    const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+    const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString();
 
-  //   icon
-  const icon = data.weather[0].icon;
-  const description = data.weather[0].main;
+    // Weather icon and description
+    const icon = data.weather[0].icon;
+    const description = data.weather[0].description;
 
-  mainCard.innerHTML = "";
+    // Clear previous content
+    mainCardLeft.innerHTML = "";
+    mainCardRight.innerHTML = "";
 
-  //divs for main card
-  const mainCardRight = document.createElement("div");
-  const mainCardLeft = document.createElement("div");
+    // Current weather details
+    const cityNameItem = document.createElement("p");
+    const celsiusItem = document.createElement("p");
+    const feelsLikeItem = document.createElement("p");
+    const tempMaxItem = document.createElement("p");
+    const humidityItem = document.createElement("p");
+    const sunriseItem = document.createElement("p");
+    const sunsetItem = document.createElement("p");
 
+    // Current weather icon and description
+    const iconItem = document.createElement("img");
+    const descriptionItem = document.createElement("p");
 
+    // Set classes and text content
+    cityNameItem.className = "text-6xl font-semibold";
+    cityNameItem.textContent = `${cityName} | ${today}`;
 
+    celsiusItem.className = "text-4xl";
+    celsiusItem.textContent = `Temp: ${celsius}°C`;
 
-  //Current weather details
-  const cityNameItem = document.createElement("p");
-  const celsiusItem = document.createElement("p");
-  const feelsLikeItem = document.createElement("p");
-  const tempMaxItem = document.createElement("p");
-  const humidityItem = document.createElement("p");
-  const sunriseItem = document.createElement("p");
-  const sunsetItem = document.createElement("p");
+    feelsLikeItem.className = "text-4xl";
+    feelsLikeItem.textContent = `Feels Like: ${feelsLike}°C`;
 
- //current weather icon and description
- const iconItem = document.createElement("img");
- const descriptionItem = document.createElement("p");
+    tempMaxItem.className = "text-4xl font";
+    tempMaxItem.textContent = `Max Temp: ${tempMax}°C`;
 
+    humidityItem.className = "text-4xl";
+    humidityItem.textContent = `Humidity: ${humidity}%`;
 
- //append items to main card
-  cityNameItem.className = "text-6xl text-white font-semibold";
-  cityNameItem.textContent = `${cityName} | ${today}`;
+    sunriseItem.className = "text-4xl";
+    sunriseItem.textContent = `Sunrise: ${sunrise} AM`;
 
-  celsiusItem.className = "text-4xl text-white";
-  celsiusItem.textContent = `Temp: ${celsius}°C`;
+    sunsetItem.className = "text-4xl";
+    sunsetItem.textContent = `Sunset: ${sunset} PM`;
 
+    iconItem.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+    iconItem.className = "w-[350px] h-[350px] mx-auto";
+    descriptionItem.className = "text-4xl";
+    descriptionItem.textContent = description;
 
-  
-  mainCardLeft.appendChild(cityNameItem, celsiusItem);
-  mainCardRight.appendChild(cityNameItem);
-  mainCard.appendChild(mainCardLeft, mainCardRight);
+    // Append items to main card
+    mainCardLeft.appendChild(cityNameItem);
+    mainCardLeft.appendChild(celsiusItem);
+    mainCardLeft.appendChild(feelsLikeItem);
+    mainCardLeft.appendChild(tempMaxItem);
+    mainCardLeft.appendChild(humidityItem);
+    mainCardLeft.appendChild(sunriseItem);
+    mainCardLeft.appendChild(sunsetItem);
+
+    mainCardRight.appendChild(iconItem);
+    mainCardRight.appendChild(descriptionItem);
 }
+
 
 async function renderForecastCards() {
   // Get the forecast container
